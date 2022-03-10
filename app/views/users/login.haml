@@ -1,0 +1,19 @@
+%form.form-horizontal{ :action => 'login', :method => 'post', :role => 'form'}
+
+  %legend.center-text Login to your account
+
+  .form-group
+    %label.control-label.col-sm-2{:for => 'nickname'} Nickname
+    .col-sm-6
+      %input.form-control{:type => 'text', :name => 'nickname'}
+
+  .form-group
+    %label.control-label.col-sm-2{:for => 'password'} Password
+    .col-sm-6
+      %input.form-control{:type => 'password', :name => 'password'}
+
+  .col-sm-offset-2.col-sm-10
+    %button.btn.btn-primary{:type => 'submit'} Login
+
+  .col-sm-offset-2.col-sm-10
+    =link_to '/user/new', 'or create a new account'

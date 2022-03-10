@@ -1,0 +1,32 @@
+-# publication
+- hide_all ||= false
+- quotes ||= []
+
+.publication-container
+  - if quotes.any?
+    = display_partial 'publications/toggle_buttons', hide_all: hide_all
+
+  .publication
+    .title
+      = show_title_for publication
+      .publication-btn.btn-group
+        .dropdown-toggle{:type => 'button',
+          :data =>{:toggle => 'dropdown'}}
+          %span.glyphicon.glyphicon-cog{:aria => {:hidden => true}}
+        %ul.dropdown-menu
+          - if current_user_owns?(publication)
+            %li=link_to edit_publication_path(publication), 'edit'
+          -# %li=link_to '#', 'delete'
+          %li=link_to publication_path(publication), 'permalink'
+    .publication-info
+      .author.pull-left
+        Author:
+        = show_author_for publication
+      .publisher.pull-left
+        Publisher:
+        = "#{publication.publisher} (#{publication.year})"
+
+  - if quotes.any?
+    .quotes-container{:class => ('hide' if hide_all)}
+      - quotes.each do |quote|
+        = display_partial quote_partial, :quote => quote

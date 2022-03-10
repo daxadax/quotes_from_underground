@@ -1,0 +1,7 @@
+%ul.nav.navbar-nav
+  %form.navbar-form{:role => 'search',  :action => '/search', :method => 'post'}
+    %span.search-icon.glyphicon.glyphicon-search{:width => '50px', :aria => {:hidden => true}} 
+    %input{ :type => 'text',
+            :name => 'search',
+            :value => params[:search],
+            :class => 'form-control'}

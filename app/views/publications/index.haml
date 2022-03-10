@@ -1,0 +1,5 @@
+.container
+
+  -publications.each do |publication|
+    = display_partial publication_partial, :publication => publication
+    .clear

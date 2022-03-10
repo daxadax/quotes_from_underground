@@ -1,0 +1,25 @@
+.quote.clear
+  .quote-info
+    .glyphicon.glyphicon-star.star{:class => determine_favorite_class(quote.uid),
+                                                    :data => {:uid => quote.uid,
+                                                                    :current_user => current_user_uid}}
+    = quote.page_number
+    %ul.nav.navbar-nav.pull-right
+      - if current_user_owns?(quote)
+        %li.edit{:data => {:path => edit_quote_path(quote.uid)}}
+          %a edit
+        %li= link_to delete_quote_path(quote.uid), 'delete'
+      %li= link_to similar_quotes_path(quote.uid), 'similar quotes'
+      %li= link_to quote_path(quote.uid), 'permalink'
+
+  .quote-inner
+
+    %blockquote.clear= markdown quote.content
+
+    - if quote.tags.any?
+      %ul.nav.navbar-nav.tags
+        %li.center-text.glyphicon.glyphicon-tags
+        - quote.tags.each do |tag|
+          %li= link_to "/tag/#{tag}", tag, :class => 'tag'
+
+  .clear

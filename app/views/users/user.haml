@@ -1,0 +1,14 @@
+.user-profile-boxes
+  .row
+    .col-md-9
+      %h2= user.nickname
+
+      Last login
+      = "#{Time.at(user.last_login_time)} from #{user.last_login_address}"
+
+    .profile-box.col-md-3
+      = display_widget :path => user_tags_path(user.uid, 10), :title => "Top tags"
+
+  .profile-box
+    = display_widget :path => favorite_quotes_path(user.uid, 1),
+      :title => "#{user.favorites.size} favorite quotes, showing most recent #{link_to(favorite_quotes_path(user.uid), "See all")}"

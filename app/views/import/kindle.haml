@@ -1,0 +1,11 @@
+%form.form-vertical{:action=>"/import_from_kindle",
+                              :method=>"post",
+                              :role => 'form',
+                              :enctype=>"multipart/form-data"}
+  %fieldset
+
+  %legend Import highlights from your Kindle
+
+  %input#clippings-select{:type=>"file", :name=>"file"}
+
+  %button.btn.btn-primary{:type=>"submit", :id => 'submit'} Import
