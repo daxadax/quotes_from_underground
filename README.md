@@ -4,7 +4,7 @@
 
 current:
 
- * git init
+ * ~~git init~~
  * dump working db
 
 migrations:
