@@ -14,6 +14,7 @@ require './lib/init'
 
 # app
 Dir.glob('./app/helpers/*.rb') { |f| require f }
+require 'redcarpet'
 require './app/server.rb'
 
 enable :sessions
