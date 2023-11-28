@@ -245,6 +245,6 @@ helpers do
       superscript: true
     }
 
-    Redcarpet::Markdown.new(renderer, extensions).render(text)
+    Redcarpet::Markdown.new(renderer, extensions).render(text).gsub("\n", "</br>")
   end
 end
