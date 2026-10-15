@@ -1,0 +1,23 @@
+#import-review
+  #info-box
+    %h2.banner
+      Please review the quotes you've just imported
+    %ul
+      %li
+        Check title and author and fix any mistakes.
+      %li
+        Check that tags are reasonable and add any additional tags.
+      %li
+        When duplicates are detected, they appear below with green (add) and red (skip) buttons.
+        This file had none if you only see imported quotes.
+
+  .import-nav
+    != link_to user_profile_path, 'Back to dashboard', class: 'btn btn-default'
+
+  - unless import.possible_duplicates.empty?
+    .duplicate-quotes-outer-holder
+      != display_page 'import/duplicate_quotes', :duplicates => import.possible_duplicates
+
+  - unless import.added_quotes.size == 0
+    %h2.imported-quotes-holder Successfully imported quotes:
+    != display_partial quotes_template, :quotes => import.added_quotes

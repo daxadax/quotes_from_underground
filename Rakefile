@@ -1,12 +1,35 @@
+unless ENV['RACK_ENV'] == 'production'
+  require 'dotenv'
+
+  root = __dir__
+  Dotenv.load(
+    *[
+      ENV['RACK_ENV'] ? File.expand_path(".env.#{ENV['RACK_ENV']}", root) : nil,
+      File.expand_path('.env', root)
+    ].compact
+  )
+end
+
 require 'rake/testtask'
 require_relative 'lib/persistence/tasks'
 
-task :default => :test
+namespace :assets do
+  desc 'Compile override.sass → override.css (same paths as config.ru)'
+  task :css do
+    require 'sass/plugin'
 
-if ENV['RACK_ENV'] == 'test' || ENV['RACK_ENV'] == 'development'
-  require 'dotenv'
-  Dotenv.load
+    dir = File.expand_path('public/stylesheets', __dir__)
+    Sass::Plugin.options.update(
+      css_location: dir,
+      template_location: File.join(dir, 'sass'),
+      style: :compressed
+    )
+    Sass::Plugin.update_stylesheets
+    puts "Wrote #{File.join(dir, 'override.css')}"
+  end
 end
+
+task :default => :test
 
 Rake::TestTask.new do |t|
   t.libs << "spec"

@@ -16,18 +16,14 @@ gem 'puma'
 gem 'bcrypt'
 gem 'bound'
 gem 'kindleclippings', '~>1.3.3'
-gem 'nokogiri', '~>1.6.1'
 
 # db
 gem 'sequel'
 gem 'pg'
 
 group :development do
-  gem 'capybara'
   gem 'minitest'
   gem 'minitest-spec'
-  gem 'minitest-capybara'
-  gem 'rack-test'
   gem 'shotgun'
 end
 

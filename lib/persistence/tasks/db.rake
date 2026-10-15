@@ -1,4 +1,7 @@
 namespace :db do
+  DEV_DATABASE = 'quotes-development'.freeze
+  TASKS_DIR = File.dirname(__FILE__)
+
   desc "Drop database for environment in DB_ENV for DB_USER"
   task :drop do
     unless ENV.member?('DB_ENV')
@@ -25,28 +28,30 @@ namespace :db do
     print "Database quotes-#{env} created successfully\n"
   end
 
-  desc "Run migrations (optionally include version number)"
+  desc "Run migrations on quotes-development (or DATABASE_URL)"
   task :migrate do
-    require "sequel"
+    require 'sequel'
     Sequel.extension :migration
 
-    unless ENV.member?('DATABASE_URL')
-      raise 'Please provide a database as `ENV[DATABASE_URL]`'
-    end
+    url = ENV['DATABASE_URL'] || "postgres:///#{DEV_DATABASE}"
+    migration_dir = File.expand_path('../../../migrations', TASKS_DIR)
+    db = Sequel.connect(url)
 
-    version = ENV['VERSION']
-    database_url = ENV['DATABASE_URL']
-    migration_dir = File.expand_path('../../../../migrations', __FILE__)
-    db = Sequel.connect(database_url)
-
-    if version
-      puts "Migrating to version #{version}"
-      Sequel::Migrator.run(db, migration_dir, :target => version.to_i)
+    puts "Migrating #{url}"
+    if ENV['VERSION']
+      Sequel::Migrator.run(db, migration_dir, target: ENV['VERSION'].to_i)
     else
-      puts "Migrating"
       Sequel::Migrator.run(db, migration_dir)
     end
 
     puts 'Migration complete'
+  end
+
+  desc 'Import data/production_data.json (DATABASE_URL or quotes-development)'
+  task :import do
+    url = ENV['DATABASE_URL'] || "postgres:///#{DEV_DATABASE}"
+    exec({ 'DATABASE_URL' => url }, 'ruby',
+         File.expand_path('../../../scripts/import_from_json.rb', TASKS_DIR),
+         '--truncate', *ARGV)
   end
 end
